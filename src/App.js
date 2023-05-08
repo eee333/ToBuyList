@@ -86,9 +86,10 @@ function TodoListHeader({sortTitle, sortStatus, sortedBy}) {
 
 function App() {
     const modes = ['start', 'add', 'edit'];
-    const [todoList, setTodoList] = useState(todos);
+    if (!localStorage.getItem('todoList')) localStorage.setItem('todoList', JSON.stringify([]));
+    const [todoList, setTodoList] = useState(JSON.parse(localStorage.getItem('todoList')));
     const [curMode, setMode] = useState(modes[0]);
-    const [sortedBy, setSort] = useState('');
+    const [sortedBy, setSort] = useState(localStorage.getItem('sortedBy'));
     
     let newTitle = React.createRef();
     
@@ -97,8 +98,12 @@ function App() {
         let curItem = newTodos.find(item => item.id === id);
         curItem.isComlete = !curItem.isComlete;
         setTodoList(newTodos);
+        localStorage.setItem('todoList', JSON.stringify(newTodos));
         console.log(todoList);
-        if(sortedBy == 'status') setSort('');
+        if(sortedBy == 'status') {
+            setSort('');
+            localStorage.setItem('sortedBy', '');
+        }
     }
     
     function changeTitle(id, corrTatle){
@@ -106,13 +111,15 @@ function App() {
         let curItem = newTodos.find(item => item.id === id);
         curItem.title = corrTatle;
         setTodoList(newTodos);
+        localStorage.setItem('todoList', JSON.stringify(newTodos));
         console.log(todoList);
     }
     
     function delItem(id){
         let newTodos = todoList.filter(item => item.id !== id);
         setTodoList(newTodos);
-        console.log(todoList);
+        localStorage.setItem('todoList', JSON.stringify(newTodos));
+        console.log(newTodos);
     }
     
     function addItem(){
@@ -124,8 +131,11 @@ function App() {
             isComlete: false
         }
 //        console.log(newItem);
+        localStorage.setItem('todoList', JSON.stringify([...todoList, newItem]));
         setTodoList([...todoList, newItem]);
         setSort('');
+        localStorage.setItem('sortedBy', '');
+        console.log(todoList);
     }
     
     function sortTitle(){
@@ -135,7 +145,9 @@ function App() {
             if (a.title.toLowerCase() < b.title.toLowerCase()) return -1; else return 1
         })
         setTodoList(newTodos);
+        localStorage.setItem('todoList', JSON.stringify(newTodos));
         setSort('title');
+        localStorage.setItem('sortedBy', 'title');
         console.log(todoList);
     }
 
@@ -144,7 +156,9 @@ function App() {
         let newTodos = [...todoList];
         newTodos.sort((a, b)=>{if (a.isComlete<b.isComlete) return -1; else return 1})
         setTodoList(newTodos);
+        localStorage.setItem('todoList', JSON.stringify(newTodos));
         setSort('status');
+        localStorage.setItem('sortedBy', 'status');
         console.log(todoList);
     }
 
