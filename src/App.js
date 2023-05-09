@@ -2,7 +2,6 @@ import './App.css';
 import React, {useState} from 'react';
 
 import Footer from './components/Footer';
-import todos from './data/todos'
 
 // https://iconscout.com/icons/user-interface
 
@@ -14,7 +13,7 @@ function ToDoList({
     return (
         <div>
         
-            <h1 style={{color: "#f66", textTransform: "uppercase"}}>{headTitle}</h1>
+            <h2 style={{color: "#f26", textTransform: "uppercase"}}>{headTitle}</h2>
             <ol className="todo_list">
                 <TodoListHeader sortTitle={sortTitle} 
                 sortStatus={sortStatus} sortedBy={sortedBy}/>

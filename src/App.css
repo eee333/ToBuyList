@@ -48,9 +48,8 @@ li.todo-control{
     animation-play-state: paused;
 }
 button{
-/*    width: 100%;*/
+    background-color: #ccc;
     padding: 8px 20px;
-/*    min-width: 100px;*/
     cursor: pointer;
     border-radius: 10px;
     border: none;
