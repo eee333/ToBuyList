@@ -1,7 +1,6 @@
 {
   "short_name": "ToDo List",
   "name": "ToDo List App Sample",
-  "version": "2.0",
   "icons": [
     {
       "src": "favicon.ico",
