@@ -29,7 +29,6 @@ li.todo-item{
     align-items: center;
 }
 li.todo-control{
-/*    background-color: #cef;*/
     width: 100%;
     text-align: left;
     border-radius: 10px;
@@ -100,6 +99,7 @@ input[type='checkbox']{
 }
 .btn-return{
     position: absolute;
+    margin-left: 0;
 }
 .head-title{
     color: #f26; 

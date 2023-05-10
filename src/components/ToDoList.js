@@ -10,7 +10,7 @@ function ToDoList({
         <div>
         {currPage >=0 &&(    
             <div class="btn-add-edit btn-return" onClick={() => changePage(-1)}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="previous"><path d="M1.293,12.707a1,1,0,0,1,0-1.414l6-6A1,1,0,0,1,8.707,6.707L4.414,11H22a1,1,0,0,1,0,2H4.414l4.293,4.293a1,1,0,0,1-1.414,1.414Z"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="previous" fill="currentColor"><path d="M1.293,12.707a1,1,0,0,1,0-1.414l6-6A1,1,0,0,1,8.707,6.707L4.414,11H22a1,1,0,0,1,0,2H4.414l4.293,4.293a1,1,0,0,1-1.414,1.414Z"></path></svg>
             </div>
         )}
             <h2 className='head-title'>{headTitle}</h2>
