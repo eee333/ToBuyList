@@ -87,6 +87,7 @@ function App() {
 
         let newTodoMain = [...todoMain];
         if(currPage >= 0){
+            newItem.isComlete = false;
             let currList = newTodoMain[currPage];
             currList.listItems = [...todoMain[currPage].listItems, newItem];
         }
