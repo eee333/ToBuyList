@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 
 import ToDoList from './components/ToDoList';
 import Footer from './components/Footer';
+import Modal from './components/Modal';
 
 // https://iconscout.com/icons/user-interface
 
@@ -23,11 +24,11 @@ function App() {
         localStorage.setItem('currPage', -1);
     }
     const [todoMain, setTodoMain] = useState(JSON.parse(localStorage.getItem('TodoMain')));
-    const [todoListIndex, setTodoList] = useState(localStorage.getItem('todoListIndex'));
 
     const [curMode, setMode] = useState(modes[0]);
     const [sortedBy, setSort] = useState(localStorage.getItem('sortedBy'));
     const [currPage, setPage] = useState(localStorage.getItem('currPage')); // -1 Главная, 0,1,2... Список конкретный
+    const [modalShow, setModalShow] = useState(false);
 
     let newTitle = React.createRef();
     
@@ -63,6 +64,12 @@ function App() {
     }
     
     function delItem(id){
+        // setModalShow(true);
+        let conf = true;
+        if (currPage < 0){
+            conf = window.confirm('Вы действительно хотите удалить список?');
+        }
+        
         let newTodoMain = [];
 
         if(currPage >= 0){
@@ -73,8 +80,9 @@ function App() {
         else{
             newTodoMain = todoMain.filter(item => item.id !== id);
         }
-
-        saveData(newTodoMain);
+        if (conf){
+            saveData(newTodoMain);
+        }
     }
     
     function addItem(){
@@ -147,7 +155,7 @@ function App() {
 
     return (
         <div className="App">
-
+            
             {currPage == -1 && 
                 <div className='main-page'>
                 <ToDoList 
@@ -185,7 +193,7 @@ function App() {
                 <Footer addItem={addItem} newTitle={newTitle} curMode={curMode} setMode={setMode} currPage={currPage}/>
                 </div>
             }
-            
+            {/* <Modal modalShow={modalShow} setModalShow={setModalShow}/> */}
         </div>
     );
 

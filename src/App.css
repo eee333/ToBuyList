@@ -109,6 +109,43 @@ input[type='checkbox']{
 .cursor-pointer{
     cursor: pointer;
 }
-.main-page li{
+.main-page li span{
     font-weight: bold;
 }
+.main-page .todo-item .btn-add-edit{
+    height: 26px;
+}
+.modal-container{
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    transition: .3s;
+}
+.modal-bg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #666;
+    opacity: .6;
+}
+.modal{
+    z-index: 10;
+    margin: auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    text-align: center;
+}
+#close{
+    margin-top: 30px;
+}
+button{
+    cursor: pointer;
+}
+.hide-modal{
+    visibility: hidden;
+    opacity: 0;
+}
+    
