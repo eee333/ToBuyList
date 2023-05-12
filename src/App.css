@@ -109,3 +109,6 @@ input[type='checkbox']{
 .cursor-pointer{
     cursor: pointer;
 }
+.main-page li{
+    font-weight: bold;
+}

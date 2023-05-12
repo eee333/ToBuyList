@@ -21,12 +21,11 @@ function ToDoItem({title, isComlete, changeStatus, id, index,
                     onClick={() => {
                         if(curMode == 'edit') {setEditItemMode(true);}     
                     }}
-                    className={currPage == -1 ? 'main-item' : ''}
+                    className={isComlete ? "done" : ""}
                     >
                     {title}
                     
                 </span>
-                
             )}
             {editItemMode && (curMode == 'edit')  &&(
                 <input type="text" onChange={(e)=>changeTitle(id, e.target.value)} value={title} onBlur={() => setEditItemMode(false)} autoFocus />

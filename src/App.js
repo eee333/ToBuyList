@@ -149,7 +149,7 @@ function App() {
         <div className="App">
 
             {currPage == -1 && 
-                <div>
+                <div className='main-page'>
                 <ToDoList 
                     headTitle="Мои списки" 
                     todoList={todoMain} 
@@ -168,7 +168,7 @@ function App() {
             }
 
             {currPage >= 0 && 
-                <div>
+                <div className='list-page'>
                 <ToDoList 
                     headTitle={todoMain[currPage].title} 
                     todoList={todoMain[currPage].listItems} 
