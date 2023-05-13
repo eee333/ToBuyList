@@ -24,7 +24,7 @@ function Footer({addItem, newTitle, curMode, setMode, currPage}) {
             {(curMode == 'add') && (
             <form onSubmit={formSubmit}>
                 <li className = "todo-control">
-                    <input type="text" ref={newTitle} placeholder={currPage >= 0 ? "Новый элемент списка" : "Новый список"} />
+                    <input type="text" autoFocus ref={newTitle} placeholder={currPage >= 0 ? "Новый элемент списка" : "Новый список"} />
                     <div >
                         <svg class="btn-add-edit" onClick={() => setMode('start')} xmlns="http://www.w3.org/2000/svg" viewBox="2 2 20 20" id="corner-arrow" fill="currentColor"><path d="m19.78 12.38-4-5a1 1 0 0 0-1.56 1.24l2.7 3.38H8a1 1 0 0 1-1-1V6a1 1 0 0 0-2 0v5a3 3 0 0 0 3 3h8.92l-2.7 3.38a1 1 0 0 0 .16 1.4A1 1 0 0 0 15 19a1 1 0 0 0 .78-.38l4-5a1 1 0 0 0 0-1.24z" data-name="corner-down-right"></path></svg>
                     </div>    

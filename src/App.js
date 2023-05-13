@@ -9,16 +9,16 @@ import Modal from './components/Modal';
 
 function App() {
     const modes = ['start', 'add', 'edit'];
-    let todos = [
-        {
-            id: 1,
-            title: 'Купить',
-            listItems: [
-                {title: '',
-                isComlete: false}
-            ]
-        }
-    ]
+    // let todos = [
+    //     {
+    //         id: 1,
+    //         title: 'Купить',
+    //         listItems: [
+    //             {title: '',
+    //             isComlete: false}
+    //         ]
+    //     }
+    // ]
     if (!localStorage.getItem('TodoMain')) {
         localStorage.setItem('TodoMain', JSON.stringify([]));
         localStorage.setItem('currPage', -1);
@@ -28,7 +28,7 @@ function App() {
     const [curMode, setMode] = useState(modes[0]);
     const [sortedBy, setSort] = useState(localStorage.getItem('sortedBy'));
     const [currPage, setPage] = useState(localStorage.getItem('currPage')); // -1 Главная, 0,1,2... Список конкретный
-    const [modalShow, setModalShow] = useState(false);
+    const [modalShow, setModalShow] = useState(0); // id элемента или 0
 
     let newTitle = React.createRef();
     
@@ -62,13 +62,17 @@ function App() {
 
         saveData(newTodoMain);
     }
-    
+    function delItemConfirm(id){
+        // console.log(id);
+        setModalShow(id);
+    }
+
     function delItem(id){
         // setModalShow(true);
         let conf = true;
-        if (currPage < 0){
-            conf = window.confirm('Вы действительно хотите удалить список?');
-        }
+        // if (currPage < 0){
+        //     conf = window.confirm('Вы действительно хотите удалить список?');
+        // }
         
         let newTodoMain = [];
 
@@ -170,6 +174,7 @@ function App() {
                     sortedBy={sortedBy}
                     changePage={changePage}
                     currPage={currPage}
+                    delItemConfirm={delItemConfirm}
                 />
                 <Footer addItem={addItem} newTitle={newTitle} curMode={curMode} setMode={setMode}/>
                 </div>
@@ -193,7 +198,7 @@ function App() {
                 <Footer addItem={addItem} newTitle={newTitle} curMode={curMode} setMode={setMode} currPage={currPage}/>
                 </div>
             }
-            {/* <Modal modalShow={modalShow} setModalShow={setModalShow}/> */}
+            <Modal modalShow={modalShow} setModalShow={setModalShow} modalFunc={delItem}/>
         </div>
     );
 
