@@ -12,9 +12,9 @@ function Modal({modalShow, setModalShow, modalFunc, itemId}) {
         <div className={modalShow ? 'modal-container' : 'modal-container hide-modal'}>
             <div className="modal-bg"></div>
             <div className="modal">
-                <h3>Вы действительно хотите удалить список?</h3>
-                <button onClick={() => setModalShow(0)} autoFocus>Отменить</button>
-                <button onClick={execFunc}>ОК</button>
+                <p><b>Удалить список?</b><br></br><span>Отменить это действие нельзя.</span><br></br></p>
+                <button onClick={() => setModalShow(0)} style={{margin:0}}>Отмена</button>
+                <button onClick={execFunc}>Удалить</button>
             </div>
         </div>
     )

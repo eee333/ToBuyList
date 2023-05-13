@@ -167,14 +167,13 @@ function App() {
                     todoList={todoMain} 
                     changeStatus={changeStatus} 
                     curMode={curMode} 
-                    delItem={delItem} 
+                    delItem={delItemConfirm} 
                     changeTitle={changeTitle}
                     sortTitle={sortTitle}
                     sortStatus={sortStatus}
                     sortedBy={sortedBy}
                     changePage={changePage}
                     currPage={currPage}
-                    delItemConfirm={delItemConfirm}
                 />
                 <Footer addItem={addItem} newTitle={newTitle} curMode={curMode} setMode={setMode}/>
                 </div>
