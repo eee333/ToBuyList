@@ -107,10 +107,14 @@ input[type='checkbox']{
 .head-title{
     color: #f26; 
     text-transform: uppercase;
+    padding: 0 30px;
     margin-bottom: 20px;
 }
 .cursor-pointer{
     cursor: pointer;
+}
+.list-page{
+    overflow: hidden;
 }
 .main-page li span{
     font-weight: bold;
