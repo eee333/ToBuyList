@@ -17,7 +17,7 @@ function ToDoList({
             <ol className="todo_list">
             {currPage >=0 &&(
                 <li className = "todo-control" >
-                    <span style={{color:"gray"}}>сортировать</span>
+                    <span className={'hint-text'}>сортировать</span>
                     <button onClick={sortTitle} 
                     className={sortedBy == 'title' ? 'active' : ''}>
                             Дела

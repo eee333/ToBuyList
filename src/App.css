@@ -86,11 +86,22 @@ input[type='checkbox']{
     display: flex;
     justify-content: flex-end;
 }
+.mode-set .hint-text{
+    margin-right: auto;
+}
 .btn-del{
     height: 16px;
     width: 16px;
     display: inline-block;
     margin-right: 10px;
+    cursor: pointer;
+}
+.btn-edit-small{
+    height: 18px;
+    width: 18px;
+    display: inline-block;
+    margin-left: 10px;
+    cursor: pointer;
 }
 .todo-item input[type="text"]{
     border: none;
@@ -161,4 +172,7 @@ input[type='checkbox']{
 .modal span{
     font-size: 1rem;
 }
-    
+.hint-text{
+    color: #999;
+    font-size: 1.1rem;
+}
