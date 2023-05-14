@@ -159,26 +159,31 @@ function App() {
 
     return (
         <div className="App">
-            
+            <div className={
+               currPage == -1 ? 'pages-container' : 'pages-container to-left-100'
+            }>
+                <div className='page'>
             {currPage == -1 && 
                 <div className='main-page'>
-                <ToDoList 
-                    headTitle="Мои списки" 
-                    todoList={todoMain} 
-                    changeStatus={changeStatus} 
-                    curMode={curMode} 
-                    delItem={delItemConfirm} 
-                    changeTitle={changeTitle}
-                    sortTitle={sortTitle}
-                    sortStatus={sortStatus}
-                    sortedBy={sortedBy}
-                    changePage={changePage}
-                    currPage={currPage}
-                />
-                <Footer addItem={addItem} newTitle={newTitle} curMode={curMode} setMode={setMode}/>
+                    
+                    <ToDoList 
+                        headTitle="Мои списки" 
+                        todoList={todoMain} 
+                        changeStatus={changeStatus} 
+                        curMode={curMode} 
+                        delItem={delItemConfirm} 
+                        changeTitle={changeTitle}
+                        sortTitle={sortTitle}
+                        sortStatus={sortStatus}
+                        sortedBy={sortedBy}
+                        changePage={changePage}
+                        currPage={currPage}
+                    />
+                    
                 </div>
             }
-
+            </div>
+            <div className='page'>
             {currPage >= 0 && 
                 <div className='list-page'>
                 <ToDoList 
@@ -194,10 +199,14 @@ function App() {
                     changePage={changePage}
                     currPage={currPage}
                 />
-                <Footer addItem={addItem} newTitle={newTitle} curMode={curMode} setMode={setMode} currPage={currPage}/>
+                
                 </div>
             }
+                </div>
+            </div>
+            <Footer addItem={addItem} newTitle={newTitle} curMode={curMode} setMode={setMode} currPage={currPage}/>
             <Modal modalShow={modalShow} setModalShow={setModalShow} modalFunc={delItem}/>
+            
         </div>
     );
 
