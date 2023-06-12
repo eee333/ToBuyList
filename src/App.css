@@ -10,6 +10,7 @@
     padding: 20px;
     margin: auto;
     color: #333;
+    overflow: hidden;
 }
 
 .todo_list{
@@ -29,8 +30,6 @@ li.todo-item{
     align-items: center;
 }
 li.todo-control{
-/*    background-color: #cef;*/
-    margin-top: 20px;
     width: 100%;
     text-align: left;
     border-radius: 10px;
@@ -56,6 +55,9 @@ button{
     margin-left: 20px;
     color: #333;
 }
+button:hover{
+    background-color: #999;
+}
 button.active{
     background-color: #444;
     color: #fff;
@@ -63,6 +65,7 @@ button.active{
 input[type='checkbox']{
     width: 20px;
     height: 20px;
+    cursor: pointer;
 }
 .todo-control input{
     height: 30px;
@@ -74,24 +77,136 @@ input[type='checkbox']{
     margin-left: -10px;
     color: #333;
 }
+.todo-control div{
+    margin-left: 20px;
+}
 .btn-add-edit{
     height: 30px;
     width: 30px;
-    margin-left: 20px;
     cursor: pointer;
+    flex-shrink: 0;
 }
 .mode-set{
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+    height: 34px;
+}
+.mode-set div{
+    margin-left: 20px;
+}
+.mode-set .hint-text{
+    margin-right: auto;
 }
 .btn-del{
     height: 16px;
     width: 16px;
     display: inline-block;
     margin-right: 10px;
+    cursor: pointer;
+}
+.btn-edit-small{
+    height: 18px;
+    width: 18px;
+    display: inline-block;
+    margin-left: 10px;
+    cursor: pointer;
 }
 .todo-item input[type="text"]{
     border: none;
     font-size: 1.2rem;
     color: #333;
+}
+.main-item{
+    font-weight: bold;
+}
+.btn-return{
+    position: absolute;
+    margin-left: 0;
+}
+.head-title{
+    color: #f26; 
+    text-transform: uppercase;
+    padding: 0 30px;
+}
+.cursor-pointer{
+    cursor: pointer;
+}
+.list-page{
+    overflow: hidden;
+}
+.main-page li span{
+    font-weight: bold;
+}
+.main-page .todo-item .btn-add-edit{
+    height: 26px;
+}
+.modal-container{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    transition: .3s;
+}
+.modal-bg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #666;
+    opacity: .6;
+}
+.modal{
+    z-index: 10;
+    margin: auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    text-align: center;
+}
+#close{
+    margin-top: 30px;
+}
+.hide-modal{
+    visibility: hidden;
+    opacity: 0;
+}
+.modal p{
+    margin-bottom: 20px;
+}
+.modal span{
+    font-size: 1rem;
+}
+.hint-text{
+    color: #999;
+    font-size: 1.1rem;
+}
+/* horizontal move */
+.pages-container{
+    display: flex;
+    width: 200%;
+    transition: .3s;
+}
+.page{
+    width: 50%;
+}
+.to-left-100 {
+    margin-left: -100%;
+}
+.top-bar{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+    align-items: center;
+}
+.control{
+    height: 30px;
+    width: 30px;
+}
+svg{
+    flex-shrink: 0;
 }

@@ -1,182 +1,240 @@
 import './App.css';
 import React, {useState} from 'react';
 
+import ToDoList from './components/ToDoList';
 import Footer from './components/Footer';
+import Modal from './components/Modal';
 
 // https://iconscout.com/icons/user-interface
 
-function ToDoList({
-    headTitle, todoList, changeStatus, 
-    curMode, delItem, changeTitle, sortTitle, sortStatus, sortedBy
-    }) {
-
-    return (
-        <div>
-        
-            <h2 style={{color: "#f26", textTransform: "uppercase"}}>{headTitle}</h2>
-            <ol className="todo_list">
-                <TodoListHeader sortTitle={sortTitle} 
-                sortStatus={sortStatus} sortedBy={sortedBy}/>
-                {todoList.map(
-                   (item, index) => (
-                   <ToDoItem 
-                        key={item.id} 
-                        {...item} 
-                        changeStatus={changeStatus} 
-                        curMode={curMode} 
-                        delItem={delItem} 
-                        changeTitle={changeTitle}
-                   />)
-                )}
-            </ol>
-        </div>
-    )
-}        
-
-function ToDoItem({title, isComlete, changeStatus, id, 
-    curMode, delItem, changeTitle}) {
-    const [editItemMode, setEditItemMode] = useState(false);
-    
-    return (
-        <li className = "todo-item">
-         <span>
-          {(curMode == 'edit') && (
-            <div class="btn-del" onClick={() => delItem(id)}>
-                <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 32 32" viewBox="0 0 32 32" id="cross" fill="currentColor"><path d="M31.5,2.42828c0-0.51752-0.20148-1.00427-0.56763-1.36987c-0.73224-0.73224-2.00751-0.73224-2.73975,0L16,13.25104L3.80737,1.05841c-0.73224-0.73224-2.00751-0.73224-2.73975,0C0.70154,1.42401,0.5,1.91077,0.5,2.42828c0,0.51746,0.20154,1.00421,0.56763,1.36987l12.19263,12.19263L1.06763,28.18341C0.70154,28.54901,0.5,29.03577,0.5,29.55328c0,0.51746,0.20154,1.00421,0.56763,1.36987c0.73224,0.73224,2.00751,0.73224,2.73975,0L16,18.73053l12.19263,12.19263c0.36615,0.36609,0.85242,0.56763,1.36987,0.56763c0.51752,0,1.00378-0.20154,1.36987-0.56763C31.29852,30.5575,31.5,30.07074,31.5,29.55328c0-0.51752-0.20148-1.00427-0.56763-1.36987L18.73975,15.99078L30.93237,3.79816C31.29852,3.4325,31.5,2.94574,31.5,2.42828z"></path></svg>
-
-            </div>
-            )}
-            {!editItemMode &&(
-            <span className={isComlete ? "done" : ""} onClick={() => {
-                     if(curMode == 'edit') setEditItemMode(true)}}>
-                {title}
-            </span>
-            )}
-            {editItemMode && (curMode == 'edit')  &&(
-                <input type="text" onChange={(e)=>changeTitle(id, e.target.value)} value={title} onBlur={() => setEditItemMode(false)} autoFocus />
-             )}
-            </span>
-            <input type="checkbox" 
-            checked={isComlete}
-            onChange={() => changeStatus(id)}
-            disabled={curMode == 'edit'}
-            />
-        </li>
-    )
-}
-
-function TodoListHeader({sortTitle, sortStatus, sortedBy}) {
-
-    return (
-        <li className = "todo-control" >
-          <span style={{color:"gray"}}>сортировать</span>
-           <button onClick={sortTitle} 
-           className={sortedBy == 'title' ? 'active' : ''}>
-                Дела
-            </button>
-           
-           <button onClick={sortStatus}
-           className={sortedBy == 'status' ? 'active' : ''}>
-                Статус
-            </button>
-        </li>
-    )
-}
-
 function App() {
     const modes = ['start', 'add', 'edit'];
-    if (!localStorage.getItem('todoList')) localStorage.setItem('todoList', JSON.stringify([]));
-    const [todoList, setTodoList] = useState(JSON.parse(localStorage.getItem('todoList')));
+    // let todos = [
+    //     {
+    //         id: 1,
+    //         title: 'Купить',
+    //         listItems: [
+    //             {title: '',
+    //             isComlete: false}
+    //         ]
+    //     }
+    // ]
+    if (!localStorage.getItem('TodoMain')) {
+        localStorage.setItem('TodoMain', JSON.stringify([]));
+        localStorage.setItem('currPage', -1);
+    }
+    const [todoMain, setTodoMain] = useState(JSON.parse(localStorage.getItem('TodoMain')));
+
     const [curMode, setMode] = useState(modes[0]);
     const [sortedBy, setSort] = useState(localStorage.getItem('sortedBy'));
-    
+    const [currPage, setPage] = useState(localStorage.getItem('currPage')); // -1 Главная, 0,1,2... Список конкретный
+    const [modalShow, setModalShow] = useState(0); // id элемента или 0
+
     let newTitle = React.createRef();
     
     function changeStatus(id){
-        let newTodos = [...todoList];
-        let curItem = newTodos.find(item => item.id === id);
+        let newTodoMain = [...todoMain];
+        let currList = newTodoMain[currPage];
+
+        let curItem = currList.listItems.find(item => item.id === id);
         curItem.isComlete = !curItem.isComlete;
-        setTodoList(newTodos);
-        localStorage.setItem('todoList', JSON.stringify(newTodos));
-        console.log(todoList);
+
         if(sortedBy == 'status') {
             setSort('');
             localStorage.setItem('sortedBy', '');
         }
+        saveData(newTodoMain);
     }
     
     function changeTitle(id, corrTatle){
-        let newTodos = [...todoList];
-        let curItem = newTodos.find(item => item.id === id);
+        let newTodoMain = [...todoMain];
+        let curItem = {};
+
+        if(currPage >= 0){
+            let currList = newTodoMain[currPage];
+            curItem = currList.listItems.find(item => item.id === id);
+        }
+        else{
+            curItem = newTodoMain.find(item => item.id === id);
+        }
+
         curItem.title = corrTatle;
-        setTodoList(newTodos);
-        localStorage.setItem('todoList', JSON.stringify(newTodos));
-        console.log(todoList);
+
+        saveData(newTodoMain);
     }
-    
+    function delItemConfirm(id){
+        // console.log(id);
+        setModalShow(id);
+    }
+
     function delItem(id){
-        let newTodos = todoList.filter(item => item.id !== id);
-        setTodoList(newTodos);
-        localStorage.setItem('todoList', JSON.stringify(newTodos));
-        console.log(newTodos);
+        // setModalShow(true);
+        let conf = true;
+        // if (currPage < 0){
+        //     conf = window.confirm('Вы действительно хотите удалить список?');
+        // }
+        
+        let newTodoMain = [];
+
+        if(currPage >= 0){
+            newTodoMain = [...todoMain];
+            let currList = newTodoMain[currPage];
+            currList.listItems = todoMain[currPage].listItems.filter(item => item.id !== id);
+        }
+        else{
+            newTodoMain = todoMain.filter(item => item.id !== id);
+        }
+        if (conf){
+            saveData(newTodoMain);
+        }
     }
     
     function addItem(){
         if (!newTitle.current.value) return;
-//        alert('Новое дело: ' + newTitle.current.value);
+
         const newItem = {
             id: Date.now(),
-            title: newTitle.current.value,
-            isComlete: false
+            title: newTitle.current.value
         }
-//        console.log(newItem);
-        localStorage.setItem('todoList', JSON.stringify([...todoList, newItem]));
-        setTodoList([...todoList, newItem]);
+
+        let newTodoMain = [...todoMain];
+        if(currPage >= 0){
+            newItem.isComlete = false;
+            let currList = newTodoMain[currPage];
+            currList.listItems = [...todoMain[currPage].listItems, newItem];
+        }
+        else{
+            newItem.listItems = [];
+            newTodoMain = [...todoMain, newItem];
+            newTodoMain.sort((a, b)=>{
+                if (a.title.toLowerCase() < b.title.toLowerCase()) return -1; else return 1
+            })
+        }
+        
         setSort('');
         localStorage.setItem('sortedBy', '');
-        console.log(todoList);
+
+        saveData(newTodoMain);
     }
     
     function sortTitle(){
-        console.log("Сортируем по названиям");
-        let newTodos = [...todoList];
-        newTodos.sort((a, b)=>{
+        let newTodoMain = [...todoMain];
+        let currList = newTodoMain[currPage];
+
+        currList.listItems.sort((a, b)=>{
             if (a.title.toLowerCase() < b.title.toLowerCase()) return -1; else return 1
         })
-        setTodoList(newTodos);
-        localStorage.setItem('todoList', JSON.stringify(newTodos));
+    
         setSort('title');
         localStorage.setItem('sortedBy', 'title');
-        console.log(todoList);
+
+        saveData(newTodoMain);
     }
 
     function sortStatus(){
-        console.log("Сортируем по статусу");
-        let newTodos = [...todoList];
-        newTodos.sort((a, b)=>{if (a.isComlete<b.isComlete) return -1; else return 1})
-        setTodoList(newTodos);
-        localStorage.setItem('todoList', JSON.stringify(newTodos));
+        let newTodoMain = [...todoMain];
+        let currList = newTodoMain[currPage];
+
+        currList.listItems.sort((a, b)=>{if (a.isComlete<b.isComlete) return -1; else return 1})
+
         setSort('status');
         localStorage.setItem('sortedBy', 'status');
-        console.log(todoList);
+
+        saveData(newTodoMain);
+    }
+
+    function changePage(page){
+        console.log("Смена страницы");
+        setPage(page);
+        localStorage.setItem('currPage', page);
+        
+        console.log(page);
+    }
+
+    function saveData(obj) {
+        setTodoMain(obj);
+        localStorage.setItem('TodoMain', JSON.stringify(obj));
+        console.log(obj);
+    }
+
+    function copyToClipboard() {
+        let todoString = '';
+        
+        let todoArray = localStorage.getItem('TodoMain');
+        // alert(typeof(todoMain));
+        todoMain.forEach(element => {
+            todoString += element.title + ':\n';
+            element.listItems.forEach(subElement => {
+                todoString += subElement.title + '\n';
+            });
+            console.log(111);
+        });
+        // alert(todoString);
+        navigator.clipboard.writeText(todoString)
+              .then(() => {
+                // Получилось!
+                alert('Скопировано.');
+              })
+              .catch(err => {
+                console.log('Something went wrong', err);
+              });
     }
 
     return (
         <div className="App">
-            <ToDoList 
-                headTitle="Список покупок" 
-                todoList={todoList} 
-                changeStatus={changeStatus} 
-                curMode={curMode} 
-                delItem={delItem} 
-                changeTitle={changeTitle}
-                sortTitle={sortTitle}
-                sortStatus={sortStatus}
-                sortedBy={sortedBy}
-            />
-            <Footer addItem={addItem} newTitle={newTitle} curMode={curMode} setMode={setMode}/>
+            <div className={
+               currPage == -1 ? 'pages-container' : 'pages-container to-left-100'
+            }>
+                <div className='page'>
+            {currPage == -1 && 
+                <div className='main-page'>
+                    <ToDoList 
+                        headTitle="Мои списки" 
+                        todoList={todoMain} 
+                        changeStatus={changeStatus} 
+                        curMode={curMode} 
+                        delItem={delItemConfirm} 
+                        changeTitle={changeTitle}
+                        sortTitle={sortTitle}
+                        sortStatus={sortStatus}
+                        sortedBy={sortedBy}
+                        changePage={changePage}
+                        currPage={currPage}
+                        copyToClipboard={copyToClipboard}
+                    />
+                </div>
+            }
+            </div>
+            <div className='page'>
+            {currPage >= 0 && 
+                <div className='list-page'>
+                <ToDoList 
+                    headTitle={todoMain[currPage].title} 
+                    todoList={todoMain[currPage].listItems} 
+                    changeStatus={changeStatus} 
+                    curMode={curMode} 
+                    delItem={delItem} 
+                    changeTitle={changeTitle}
+                    sortTitle={sortTitle}
+                    sortStatus={sortStatus}
+                    sortedBy={sortedBy}
+                    changePage={changePage}
+                    currPage={currPage}
+                    copyToClipboard={copyToClipboard}
+                />
+                
+                </div>
+            }
+                </div>
+            </div>
+            <Footer addItem={addItem} newTitle={newTitle} curMode={curMode} 
+            setMode={setMode} currPage={currPage} copyToClipboard={copyToClipboard}/>
+            <Modal modalShow={modalShow} setModalShow={setModalShow} 
+            modalFunc={delItem}/>
             
         </div>
-  );
+    );
+
 }
+
 export default App;
