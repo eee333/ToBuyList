@@ -1,0 +1,3 @@
+npm start
+npm run build
+git push -u origin v_3
