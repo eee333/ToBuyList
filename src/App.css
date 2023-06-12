@@ -77,15 +77,23 @@ input[type='checkbox']{
     margin-left: -10px;
     color: #333;
 }
+.todo-control div{
+    margin-left: 20px;
+}
 .btn-add-edit{
     height: 30px;
     width: 30px;
-    margin-left: 20px;
     cursor: pointer;
+    flex-shrink: 0;
 }
 .mode-set{
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+    height: 34px;
+}
+.mode-set div{
+    margin-left: 20px;
 }
 .mode-set .hint-text{
     margin-right: auto;
@@ -120,7 +128,6 @@ input[type='checkbox']{
     color: #f26; 
     text-transform: uppercase;
     padding: 0 30px;
-    margin-bottom: 20px;
 }
 .cursor-pointer{
     cursor: pointer;
@@ -188,4 +195,18 @@ input[type='checkbox']{
 }
 .to-left-100 {
     margin-left: -100%;
+}
+.top-bar{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+    align-items: center;
+}
+.control{
+    height: 30px;
+    width: 30px;
+}
+svg{
+    flex-shrink: 0;
 }

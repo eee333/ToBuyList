@@ -157,6 +157,29 @@ function App() {
         console.log(obj);
     }
 
+    function copyToClipboard() {
+        let todoString = '';
+        
+        let todoArray = localStorage.getItem('TodoMain');
+        // alert(typeof(todoMain));
+        todoMain.forEach(element => {
+            todoString += element.title + ':\n';
+            element.listItems.forEach(subElement => {
+                todoString += subElement.title + '\n';
+            });
+            console.log(111);
+        });
+        // alert(todoString);
+        navigator.clipboard.writeText(todoString)
+              .then(() => {
+                // Получилось!
+                alert('Скопировано.');
+              })
+              .catch(err => {
+                console.log('Something went wrong', err);
+              });
+    }
+
     return (
         <div className="App">
             <div className={
@@ -177,6 +200,7 @@ function App() {
                         sortedBy={sortedBy}
                         changePage={changePage}
                         currPage={currPage}
+                        copyToClipboard={copyToClipboard}
                     />
                 </div>
             }
@@ -196,14 +220,17 @@ function App() {
                     sortedBy={sortedBy}
                     changePage={changePage}
                     currPage={currPage}
+                    copyToClipboard={copyToClipboard}
                 />
                 
                 </div>
             }
                 </div>
             </div>
-            <Footer addItem={addItem} newTitle={newTitle} curMode={curMode} setMode={setMode} currPage={currPage}/>
-            <Modal modalShow={modalShow} setModalShow={setModalShow} modalFunc={delItem}/>
+            <Footer addItem={addItem} newTitle={newTitle} curMode={curMode} 
+            setMode={setMode} currPage={currPage} copyToClipboard={copyToClipboard}/>
+            <Modal modalShow={modalShow} setModalShow={setModalShow} 
+            modalFunc={delItem}/>
             
         </div>
     );
