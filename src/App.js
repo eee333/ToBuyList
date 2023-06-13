@@ -136,17 +136,14 @@ function App() {
     }
 
     function changePage(page){
-        console.log("Смена страницы");
         setPage(page);
         localStorage.setItem('currPage', page);
-        
-        console.log(page);
     }
 
     function saveData(obj) {
         setTodoMain(obj);
         localStorage.setItem('TodoMain', JSON.stringify(obj));
-        console.log(obj);
+        // console.log(obj);
     }
 
     function copyToClipboard() {
