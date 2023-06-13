@@ -157,7 +157,9 @@ function App() {
             todoMain.forEach(element => {
                 todoString += element.title + ':\n';
                 element.listItems.forEach(subElement => {
-                    todoString += subElement.title + '\n';
+                    todoString += subElement.title;
+                    if (subElement.isComlete) todoString += '\t+';
+                    todoString += '\n';
                 });
                 
             });
@@ -165,12 +167,13 @@ function App() {
         } else {
             todoString += todoMain[currPage].title + ':\n';
             todoMain[currPage].listItems.forEach(subElement => {
-                todoString += subElement.title + '\n';
+                todoString += subElement.title;
+                if (subElement.isComlete) todoString += '\t+';
+                todoString += '\n';
             });
             modalMessage = 'Скопирован текущий список';
         }
         
-        // alert(todoString);
         if (todoString) {
             navigator.clipboard.writeText(todoString)
               .then(() => {
