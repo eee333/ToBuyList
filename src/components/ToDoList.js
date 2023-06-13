@@ -3,7 +3,7 @@ import ToDoItem from './ToDoItem';
 
 function ToDoList({
     headTitle, todoList, changeStatus, curMode, delItem, changeTitle,  
-    sortTitle, sortStatus, sortedBy, changePage, currPage, delItemConfirm, copyToClipboard
+    sortTitle, sortStatus, sortedBy, changePage, currPage, copyToClipboard
     }) {
 
     return (
@@ -55,7 +55,6 @@ function ToDoList({
                         changeTitle={changeTitle}
                         currPage={currPage}
                         changePage={changePage}
-                        delItemConfirm={delItemConfirm}
                    />)
                 )}
             </ol>

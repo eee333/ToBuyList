@@ -188,7 +188,7 @@ function App() {
                         todoList={todoMain} 
                         changeStatus={changeStatus} 
                         curMode={curMode} 
-                        delItem={delItemConfirm} 
+                        delItem={setModalDeleting} 
                         changeTitle={changeTitle}
                         sortTitle={sortTitle}
                         sortStatus={sortStatus}
@@ -223,7 +223,7 @@ function App() {
                 </div>
             </div>
             <Footer addItem={addItem} newTitle={newTitle} curMode={curMode} 
-            setMode={setMode} currPage={currPage} copyToClipboard={copyToClipboard}/>
+            setMode={setMode} currPage={currPage}/>
 
             <Modal modalShow={modalDeleting}>
                 <p><b>Удалить список?</b><br></br><span>Отменить это действие нельзя.</span><br></br></p>
