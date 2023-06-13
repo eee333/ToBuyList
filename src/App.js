@@ -151,24 +151,36 @@ function App() {
 
     function copyToClipboard() {
         let todoString = '';
+        let modalMessage = '';
         
-        let todoArray = localStorage.getItem('TodoMain');
-        // alert(typeof(todoMain));
-        todoMain.forEach(element => {
-            todoString += element.title + ':\n';
-            element.listItems.forEach(subElement => {
+        if (currPage == -1) {
+            todoMain.forEach(element => {
+                todoString += element.title + ':\n';
+                element.listItems.forEach(subElement => {
+                    todoString += subElement.title + '\n';
+                });
+                
+            });
+            modalMessage = 'Скопированы все списки';
+        } else {
+            todoString += todoMain[currPage].title + ':\n';
+            todoMain[currPage].listItems.forEach(subElement => {
                 todoString += subElement.title + '\n';
             });
-            console.log(111);
-        });
+            modalMessage = 'Скопирован текущий список';
+        }
+        
         // alert(todoString);
-        navigator.clipboard.writeText(todoString)
+        if (todoString) {
+            navigator.clipboard.writeText(todoString)
               .then(() => {
-                setModalNotice('Список скопирован');
+                setModalNotice(modalMessage);
               })
               .catch(err => {
                 console.log('Something went wrong', err);
               });
+        }
+        
     }
 
     return (
