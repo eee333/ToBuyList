@@ -83,19 +83,20 @@ function App() {
     
     function addItem(){
         if (!newTitle.current.value) return;
-
+        let inputValue = newTitle.current.value;
+        
         const newItem = {
             id: Date.now(),
             title: newTitle.current.value
         }
 
         let newTodoMain = [...todoMain];
-        if(currPage >= 0){
+        if (currPage >= 0) {
             newItem.isComlete = false;
             let currList = newTodoMain[currPage];
             currList.listItems = [...todoMain[currPage].listItems, newItem];
         }
-        else{
+        else {
             newItem.listItems = [];
             newTodoMain = [...todoMain, newItem];
             newTodoMain.sort((a, b)=>{
@@ -183,6 +184,48 @@ function App() {
         
     }
 
+    function insertFromClipboard() {
+        navigator.clipboard.readText()
+            .then(text => {
+                // `text` содержит текст, прочитанный из буфера обмена
+                addFromText(text);
+            })
+            .catch(err => {
+                // возможно, пользователь не дал разрешение на чтение данных из буфера обмена
+                console.log('Something went wrong', err);
+            });
+    }
+
+    function addFromText(todoString) {
+        
+        let todoList = todoString.trim().split('\n');
+
+        let newItems = [];
+        let id = Date.now();
+        let title = '';
+        let isComlete = false;
+        let newTodoMain = [...todoMain];
+
+        for (let i=0; i<todoList.length; i++) {
+            if (todoList[i].trim().length) {
+                id += i;
+                let textContent = todoList[i].trim();
+                title = textContent.split('+')[0]; 
+                isComlete = (textContent.slice(-1) == '+') ? true : false;
+                
+                newItems.push({id: id, title: title, isComlete: isComlete});
+            }
+        }
+
+        let currList = newTodoMain[currPage];
+        currList.listItems = [...todoMain[currPage].listItems, ...newItems];
+
+        setSort('');
+        localStorage.setItem('sortedBy', '');
+
+        saveData(newTodoMain);
+    }
+
     return (
         <div className="App">
             <div className={
@@ -204,6 +247,7 @@ function App() {
                         changePage={changePage}
                         currPage={currPage}
                         copyToClipboard={copyToClipboard}
+                        insertFromClipboard={insertFromClipboard}
                     />
                 </div>
             }
@@ -224,6 +268,7 @@ function App() {
                     changePage={changePage}
                     currPage={currPage}
                     copyToClipboard={copyToClipboard}
+                    insertFromClipboard={insertFromClipboard}
                 />
                 
                 </div>
