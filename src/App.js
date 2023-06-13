@@ -28,7 +28,8 @@ function App() {
     const [curMode, setMode] = useState(modes[0]);
     const [sortedBy, setSort] = useState(localStorage.getItem('sortedBy'));
     const [currPage, setPage] = useState(localStorage.getItem('currPage')); // -1 Главная, 0,1,2... Список конкретный
-    const [modalShow, setModalShow] = useState(0); // id элемента или 0
+    const [modalDeleting, setModalDeleting] = useState(0); // id элемента или 0
+    const [modalNotice, setModalNotice] = useState(''); // Текст сообщения
 
     let newTitle = React.createRef();
     
@@ -64,16 +65,10 @@ function App() {
     }
     function delItemConfirm(id){
         // console.log(id);
-        setModalShow(id);
+        setModalDeleting(id);
     }
 
     function delItem(id){
-        // setModalShow(true);
-        let conf = true;
-        // if (currPage < 0){
-        //     conf = window.confirm('Вы действительно хотите удалить список?');
-        // }
-        
         let newTodoMain = [];
 
         if(currPage >= 0){
@@ -84,8 +79,9 @@ function App() {
         else{
             newTodoMain = todoMain.filter(item => item.id !== id);
         }
-        if (conf){
+        if (newTodoMain.length){
             saveData(newTodoMain);
+            setModalDeleting(0);
         }
     }
     
@@ -172,8 +168,7 @@ function App() {
         // alert(todoString);
         navigator.clipboard.writeText(todoString)
               .then(() => {
-                // Получилось!
-                alert('Скопировано.');
+                setModalNotice('Список скопирован');
               })
               .catch(err => {
                 console.log('Something went wrong', err);
@@ -229,8 +224,17 @@ function App() {
             </div>
             <Footer addItem={addItem} newTitle={newTitle} curMode={curMode} 
             setMode={setMode} currPage={currPage} copyToClipboard={copyToClipboard}/>
-            <Modal modalShow={modalShow} setModalShow={setModalShow} 
-            modalFunc={delItem}/>
+
+            <Modal modalShow={modalDeleting}>
+                <p><b>Удалить список?</b><br></br><span>Отменить это действие нельзя.</span><br></br></p>
+                <button onClick={() => setModalDeleting(0)} style={{margin:0}}>Отмена</button>
+                <button onClick={() => delItem(modalDeleting)}>Удалить</button>
+            </Modal>
+
+            <Modal modalShow={modalNotice}>
+                <p><b>{modalNotice}</b></p>
+                <button onClick={() => setModalNotice('')} style={{margin:0}}>Ok</button>
+            </Modal>
             
         </div>
     );
