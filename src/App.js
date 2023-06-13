@@ -63,10 +63,6 @@ function App() {
 
         saveData(newTodoMain);
     }
-    function delItemConfirm(id){
-        // console.log(id);
-        setModalDeleting(id);
-    }
 
     function delItem(id){
         let newTodoMain = [];
