@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Footer({addItem, newTitle, curMode, setMode, currPage, copyToClipboard}) {
+function Footer({addItem, newTitle, curMode, setMode, currPage}) {
     
     function formSubmit(e){
         e.preventDefault();

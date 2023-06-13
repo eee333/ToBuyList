@@ -63,10 +63,6 @@ function App() {
 
         saveData(newTodoMain);
     }
-    function delItemConfirm(id){
-        // console.log(id);
-        setModalDeleting(id);
-    }
 
     function delItem(id){
         let newTodoMain = [];
@@ -140,39 +136,51 @@ function App() {
     }
 
     function changePage(page){
-        console.log("Смена страницы");
         setPage(page);
         localStorage.setItem('currPage', page);
-        
-        console.log(page);
     }
 
     function saveData(obj) {
         setTodoMain(obj);
         localStorage.setItem('TodoMain', JSON.stringify(obj));
-        console.log(obj);
+        // console.log(obj);
     }
 
     function copyToClipboard() {
         let todoString = '';
+        let modalMessage = '';
         
-        let todoArray = localStorage.getItem('TodoMain');
-        // alert(typeof(todoMain));
-        todoMain.forEach(element => {
-            todoString += element.title + ':\n';
-            element.listItems.forEach(subElement => {
-                todoString += subElement.title + '\n';
+        if (currPage == -1) {
+            todoMain.forEach(element => {
+                todoString += element.title + ':\n';
+                element.listItems.forEach(subElement => {
+                    todoString += subElement.title;
+                    if (subElement.isComlete) todoString += '\t+';
+                    todoString += '\n';
+                });
+                
             });
-            console.log(111);
-        });
-        // alert(todoString);
-        navigator.clipboard.writeText(todoString)
+            modalMessage = 'Скопированы все списки';
+        } else {
+            todoString += todoMain[currPage].title + ':\n';
+            todoMain[currPage].listItems.forEach(subElement => {
+                todoString += subElement.title;
+                if (subElement.isComlete) todoString += '\t+';
+                todoString += '\n';
+            });
+            modalMessage = 'Скопирован текущий список';
+        }
+        
+        if (todoString) {
+            navigator.clipboard.writeText(todoString)
               .then(() => {
-                setModalNotice('Список скопирован');
+                setModalNotice(modalMessage);
               })
               .catch(err => {
                 console.log('Something went wrong', err);
               });
+        }
+        
     }
 
     return (
@@ -188,7 +196,7 @@ function App() {
                         todoList={todoMain} 
                         changeStatus={changeStatus} 
                         curMode={curMode} 
-                        delItem={delItemConfirm} 
+                        delItem={setModalDeleting} 
                         changeTitle={changeTitle}
                         sortTitle={sortTitle}
                         sortStatus={sortStatus}
@@ -223,7 +231,7 @@ function App() {
                 </div>
             </div>
             <Footer addItem={addItem} newTitle={newTitle} curMode={curMode} 
-            setMode={setMode} currPage={currPage} copyToClipboard={copyToClipboard}/>
+            setMode={setMode} currPage={currPage}/>
 
             <Modal modalShow={modalDeleting}>
                 <p><b>Удалить список?</b><br></br><span>Отменить это действие нельзя.</span><br></br></p>
