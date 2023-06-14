@@ -184,7 +184,7 @@ function App() {
         
     }
 
-    function insertFromClipboard() {
+    function insertFromClipboard() { //  Забрать список из буфера и вставить в приложение
         navigator.clipboard.readText()
             .then(text => {
                 // `text` содержит текст, прочитанный из буфера обмена
@@ -201,7 +201,7 @@ function App() {
         let newTodoMain = [...todoMain];
         let todoList = todoString.trim().split('\n');
 
-        if (currPage >= 0) {
+        if (currPage >= 0) { // Страница текушего списка
 
             let newItems = listToTodos(todoList);
     
@@ -210,7 +210,8 @@ function App() {
 
             setSort('');
             localStorage.setItem('sortedBy', '');
-        } else {
+
+        } else {  // Страница со всеми списками
             let newItems = [];
             let id = "id" + Math.random().toString(16).slice(2);
             let title = '';
