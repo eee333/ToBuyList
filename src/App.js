@@ -86,7 +86,7 @@ function App() {
         let inputValue = newTitle.current.value;
         
         const newItem = {
-            id: Date.now(),
+            id: ("id" + Math.random().toString(16).slice(2)),
             title: newTitle.current.value
         }
 
@@ -213,11 +213,11 @@ function App() {
             localStorage.setItem('sortedBy', '');
         } else {
             let newItems = [];
-            let id = Date.now();
+            let id = "id" + Math.random().toString(16).slice(2);
             let title = '';
             let listItems = [];
             for (let i=0; i<todoList.length; i++) {
-                id += i;
+                id = "id" + Math.random().toString(16).slice(2);
                 title = todoList[i];
                 if (title.includes(':')) {
                     title = title.split(':')[0];
@@ -251,12 +251,12 @@ function App() {
     function listToTodos(todoList) { // Из списка слов в список объектов todo
         
         let newItems = [];
-        let id = Date.now();
+        let id = "id" + Math.random().toString(16).slice(2);
         let title = '';
         let isComlete = false;
         for (let i=0; i<todoList.length; i++) {
             if (todoList[i].trim().length) {
-                id += i;
+                id = "id" + Math.random().toString(16).slice(2);
                 let textContent = todoList[i].trim();
                 title = textContent.split('+')[0]; 
                 isComlete = (textContent.slice(-1) == '+') ? true : false;
