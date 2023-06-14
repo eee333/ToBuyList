@@ -197,15 +197,47 @@ function App() {
     }
 
     function addFromText(todoString) {
-        
+
+        let newTodoMain = [...todoMain];
         let todoList = todoString.trim().split('\n');
 
+        if (currPage >= 0) {
+
+            let newItems = listToTodos(todoList);
+    
+            let currList = newTodoMain[currPage];
+            currList.listItems = [...todoMain[currPage].listItems, ...newItems];
+
+            setSort('');
+            localStorage.setItem('sortedBy', '');
+        } else {
+            let newItems = [];
+            let id = Date.now();
+            let title = '';
+            let listItems = [];
+            for (let i=0; i<todoList.length; i++) {
+                id += i;
+                title = todoList[i];
+                newItems.push({id: id, title: title, listItems: listItems});
+            }
+            
+            newTodoMain = [...todoMain, ...newItems];
+            newTodoMain.sort((a, b)=>{
+                if (a.title.toLowerCase() < b.title.toLowerCase()) return -1; else return 1
+            })
+            
+            
+        }
+        
+        saveData(newTodoMain);
+    }
+
+    function listToTodos(todoList) { // Из списка слов в список объектов todo
+        
         let newItems = [];
         let id = Date.now();
         let title = '';
         let isComlete = false;
-        let newTodoMain = [...todoMain];
-
         for (let i=0; i<todoList.length; i++) {
             if (todoList[i].trim().length) {
                 id += i;
@@ -216,14 +248,7 @@ function App() {
                 newItems.push({id: id, title: title, isComlete: isComlete});
             }
         }
-
-        let currList = newTodoMain[currPage];
-        currList.listItems = [...todoMain[currPage].listItems, ...newItems];
-
-        setSort('');
-        localStorage.setItem('sortedBy', '');
-
-        saveData(newTodoMain);
+        return newItems;
     }
 
     return (
