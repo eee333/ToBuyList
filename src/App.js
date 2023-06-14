@@ -75,10 +75,9 @@ function App() {
         else{
             newTodoMain = todoMain.filter(item => item.id !== id);
         }
-        if (newTodoMain.length){
-            saveData(newTodoMain);
-            setModalDeleting(0);
-        }
+
+        saveData(newTodoMain);
+        setModalDeleting(0);
     }
     
     function addItem(){
