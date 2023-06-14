@@ -75,10 +75,9 @@ function App() {
         else{
             newTodoMain = todoMain.filter(item => item.id !== id);
         }
-        if (newTodoMain.length){
-            saveData(newTodoMain);
-            setModalDeleting(0);
-        }
+
+        saveData(newTodoMain);
+        setModalDeleting(0);
     }
     
     function addItem(){
@@ -86,7 +85,7 @@ function App() {
         let inputValue = newTitle.current.value;
         
         const newItem = {
-            id: Date.now(),
+            id: ("id" + Math.random().toString(16).slice(2)),
             title: newTitle.current.value
         }
 
@@ -162,6 +161,7 @@ function App() {
                 
             });
             modalMessage = 'Скопированы все списки';
+            console.log(todoMain);
         } else {
             todoString += todoMain[currPage].title + ':\n';
             todoMain[currPage].listItems.forEach(subElement => {
@@ -184,7 +184,7 @@ function App() {
         
     }
 
-    function insertFromClipboard() {
+    function insertFromClipboard() { //  Забрать список из буфера и вставить в приложение
         navigator.clipboard.readText()
             .then(text => {
                 // `text` содержит текст, прочитанный из буфера обмена
@@ -201,7 +201,7 @@ function App() {
         let newTodoMain = [...todoMain];
         let todoList = todoString.trim().split('\n');
 
-        if (currPage >= 0) {
+        if (currPage >= 0) { // Страница текушего списка
 
             let newItems = listToTodos(todoList);
     
@@ -210,22 +210,38 @@ function App() {
 
             setSort('');
             localStorage.setItem('sortedBy', '');
-        } else {
+
+        } else {  // Страница со всеми списками
             let newItems = [];
-            let id = Date.now();
+            let id = "id" + Math.random().toString(16).slice(2);
             let title = '';
             let listItems = [];
             for (let i=0; i<todoList.length; i++) {
-                id += i;
+                id = "id" + Math.random().toString(16).slice(2);
                 title = todoList[i];
+                if (title.includes(':')) {
+                    title = title.split(':')[0];
+                    let listTodo = [];
+                    for (let j=i+1; j<todoList.length; j++) {
+                        if (todoList[j].includes(':')) {
+                            break;
+                        } else {
+                            listTodo.push(todoList[j]);
+                            i = j;
+                        }
+                    }
+                    if (listTodo.length) {
+                        listItems = listToTodos(listTodo);
+                    }
+                }
                 newItems.push({id: id, title: title, listItems: listItems});
+                listItems = [];
             }
             
             newTodoMain = [...todoMain, ...newItems];
             newTodoMain.sort((a, b)=>{
                 if (a.title.toLowerCase() < b.title.toLowerCase()) return -1; else return 1
             })
-            
             
         }
         
@@ -235,12 +251,12 @@ function App() {
     function listToTodos(todoList) { // Из списка слов в список объектов todo
         
         let newItems = [];
-        let id = Date.now();
+        let id = "id" + Math.random().toString(16).slice(2);
         let title = '';
         let isComlete = false;
         for (let i=0; i<todoList.length; i++) {
             if (todoList[i].trim().length) {
-                id += i;
+                id = "id" + Math.random().toString(16).slice(2);
                 let textContent = todoList[i].trim();
                 title = textContent.split('+')[0]; 
                 isComlete = (textContent.slice(-1) == '+') ? true : false;
