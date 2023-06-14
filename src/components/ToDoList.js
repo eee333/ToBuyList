@@ -37,7 +37,7 @@ function ToDoList({
                     <span className={'hint-text'}>Сортировать</span>
                     <button onClick={sortTitle} 
                     className={sortedBy == 'title' ? 'active' : ''}>
-                            Дела
+                            от А до Я
                         </button>
                     
                     <button onClick={sortStatus}
