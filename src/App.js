@@ -162,6 +162,7 @@ function App() {
                 
             });
             modalMessage = 'Скопированы все списки';
+            console.log(todoMain);
         } else {
             todoString += todoMain[currPage].title + ':\n';
             todoMain[currPage].listItems.forEach(subElement => {
@@ -218,14 +219,29 @@ function App() {
             for (let i=0; i<todoList.length; i++) {
                 id += i;
                 title = todoList[i];
+                if (title.includes(':')) {
+                    title = title.split(':')[0];
+                    let listTodo = [];
+                    for (let j=i+1; j<todoList.length; j++) {
+                        if (todoList[j].includes(':')) {
+                            break;
+                        } else {
+                            listTodo.push(todoList[j]);
+                            i = j;
+                        }
+                    }
+                    if (listTodo.length) {
+                        listItems = listToTodos(listTodo);
+                    }
+                }
                 newItems.push({id: id, title: title, listItems: listItems});
+                listItems = [];
             }
             
             newTodoMain = [...todoMain, ...newItems];
             newTodoMain.sort((a, b)=>{
                 if (a.title.toLowerCase() < b.title.toLowerCase()) return -1; else return 1
             })
-            
             
         }
         
