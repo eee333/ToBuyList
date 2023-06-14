@@ -276,7 +276,7 @@ function App() {
                 </div>
             </div>
             <Footer addItem={addItem} newTitle={newTitle} curMode={curMode} 
-            setMode={setMode} currPage={currPage}/>
+            setMode={setMode} currPage={currPage} addFromText={addFromText}/>
 
             <Modal modalShow={modalDeleting}>
                 <p><b>Удалить список?</b><br></br><span>Отменить это действие нельзя.</span><br></br></p>

@@ -1,12 +1,20 @@
 import React from 'react';
 
-function Footer({addItem, newTitle, curMode, setMode, currPage}) {
+function Footer({addItem, newTitle, curMode, setMode, currPage, addFromText}) {
     
     function formSubmit(e){
         e.preventDefault();
         addItem();    
         newTitle.current.value = '';
-    }    
+    }
+
+    function inputPaste(e){
+        e.preventDefault();
+        let inputText = e.clipboardData.getData('text/plain');
+        if (inputText.includes('\n')){
+            addFromText(inputText);
+        } else newTitle.current.value = inputText;
+    }
 
     return (
         <div>
@@ -24,7 +32,7 @@ function Footer({addItem, newTitle, curMode, setMode, currPage}) {
             {(curMode == 'add') && (
             <form onSubmit={formSubmit}>
                 <li className = "todo-control">
-                    <input type="text" autoFocus ref={newTitle} placeholder={currPage >= 0 ? "Новый элемент списка" : "Новый список"} />
+                    <input onPaste={e => {inputPaste(e)}} type="text" autoFocus ref={newTitle} placeholder={currPage >= 0 ? "Новый элемент списка" : "Новый список"} />
                     {/* <textarea autoFocus ref={newTitle} placeholder={currPage >= 0 ? "Новый элемент списка" : "Новый список"} rows="1"></textarea> */}
                     <div class="btn-add-edit" onClick={() => setMode('start')}>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="4 4 16 16" id="cancel"><path fill="currentColor" d="M13.41,12l4.3-4.29a1,1,0,1,0-1.42-1.42L12,10.59,7.71,6.29A1,1,0,0,0,6.29,7.71L10.59,12l-4.3,4.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l4.29,4.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z"></path></svg>
