@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 function ToDoItem({title, isComlete, changeStatus, id, index,
-    curMode, delItem, changeTitle, currPage, changePage, delItemConfirm}) {
+    curMode, delItem, changeTitle, currPage, changePage}) {
     const [editItemMode, setEditItemMode] = useState(false);
     
     return (
