@@ -66,6 +66,7 @@ input[type='checkbox']{
     width: 20px;
     height: 20px;
     cursor: pointer;
+    flex-shrink: 0;
 }
 .todo-control input{
     height: 30px;
@@ -161,7 +162,7 @@ textarea::-webkit-scrollbar {
     height: 26px;
 }
 .modal-container{
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     display: flex;
@@ -203,6 +204,8 @@ textarea::-webkit-scrollbar {
     color: #999;
     font-size: 1.1rem;
 }
+
+
 /* horizontal move */
 .pages-container{
     display: flex;
@@ -215,6 +218,8 @@ textarea::-webkit-scrollbar {
 .to-left-100 {
     margin-left: -100%;
 }
+/* end horizontal move */
+ 
 .top-bar{
     display: flex;
     justify-content: space-between;
@@ -228,4 +233,23 @@ textarea::-webkit-scrollbar {
 }
 svg{
     flex-shrink: 0;
+}
+
+@media screen and (max-width: 380px) {
+    .hint-text{
+        font-size: 0.9rem;
+        /* display: none; */
+    }
+    .head-title {
+        font-size: 1.3rem;
+    }
+}
+
+@media screen and (max-width: 340px) {
+    .hint-text{
+        display: none;
+    }
+    .head-title {
+        font-size: 1.2rem;
+    }
 }
